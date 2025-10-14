@@ -22,7 +22,6 @@ public class TaskListService {
 
     public TaskList AddTaskList(TaskList taskList) {
         return taskListRepository.save(taskList);
-
     }
 
     public Optional<TaskList> GetTaskListById(UUID id) {
