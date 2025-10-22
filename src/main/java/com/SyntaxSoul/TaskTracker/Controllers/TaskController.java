@@ -1,6 +1,7 @@
 package com.SyntaxSoul.TaskTracker.Controllers;
 
 
+import com.SyntaxSoul.TaskTracker.DTOs.TaskDto;
 import com.SyntaxSoul.TaskTracker.Models.Task;
 import com.SyntaxSoul.TaskTracker.Repository.TaskListRepository;
 import com.SyntaxSoul.TaskTracker.Repository.TaskRepository;
@@ -21,19 +22,19 @@ public class TaskController {
     private  TaskService taskService;
 
     @GetMapping()
-    public List<Task> GetTasks(@PathVariable UUID task_list_id)
+    public List<TaskDto> GetTasks(@PathVariable UUID task_list_id)
     {
         return taskService.GetTasks(task_list_id);
     }
 
     @PostMapping()
-    public Task PutTasks(@PathVariable UUID task_list_id,@RequestBody Task task)
+    public TaskDto PutTasks(@PathVariable UUID task_list_id,@RequestBody Task task)
     {
         return taskService.putTasks(task_list_id,task);
     }
 
     @GetMapping(path = "/{task_id}")
-    public Task GetTask(@PathVariable UUID task_id,@PathVariable UUID task_list_id)
+    public TaskDto GetTask(@PathVariable UUID task_id,@PathVariable UUID task_list_id)
     {
         return taskService.GetTask(task_id,task_list_id);
     }

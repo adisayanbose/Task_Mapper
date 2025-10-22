@@ -1,5 +1,7 @@
 package com.SyntaxSoul.TaskTracker.Controllers;
 
+import com.SyntaxSoul.TaskTracker.DTOs.TaskListDto;
+import com.SyntaxSoul.TaskTracker.DTOs.TaskListSummaryDto;
 import com.SyntaxSoul.TaskTracker.Models.TaskList;
 import com.SyntaxSoul.TaskTracker.Service.TaskListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +18,24 @@ public class TaskListController {
     @Autowired
     private TaskListService taskListService;
 
-
     @GetMapping(path = "")
-    public List<TaskList> GetTaskList(){
-        System.out.println("hi ");
+    public List<TaskListSummaryDto> GetTaskList(){
         return taskListService.GetTaskLists();
     }
 
     @PostMapping(path ="")
-    public TaskList AddTaskList(@RequestBody TaskList taskList)
+    public TaskListDto AddTaskList(@RequestBody TaskListDto taskListDto)
     {
-        return taskListService.AddTaskList(taskList);
+        return taskListService.AddTaskList(taskListDto);
     }
 
     @GetMapping(path = "/{Id}")
-    public Optional<TaskList> GetTaskListById(@PathVariable UUID Id){
+    public TaskListDto GetTaskListById(@PathVariable UUID Id){
         return taskListService.GetTaskListById(Id);
     }
 
     @PutMapping("/{id}")
-    public TaskList PostTaskListById(@PathVariable UUID id,@RequestBody TaskList taskList){
+    public TaskListDto PostTaskListById(@PathVariable UUID id,@RequestBody TaskList taskList){
         return taskListService.PutTaskListById(id,taskList);
     }
 

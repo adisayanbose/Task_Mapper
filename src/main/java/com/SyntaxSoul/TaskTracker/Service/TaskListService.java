@@ -1,5 +1,9 @@
 package com.SyntaxSoul.TaskTracker.Service;
 
+import com.SyntaxSoul.TaskTracker.DTOs.TaskListDto;
+import com.SyntaxSoul.TaskTracker.DTOs.TaskListSummaryDto;
+import com.SyntaxSoul.TaskTracker.Mappers.TaskListMapper;
+import com.SyntaxSoul.TaskTracker.Mappers.TaskMapper;
 import com.SyntaxSoul.TaskTracker.Models.TaskList;
 import com.SyntaxSoul.TaskTracker.Repository.TaskListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,29 +12,37 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskListService {
 
     @Autowired
     private TaskListRepository taskListRepository;
+    @Autowired
+    private TaskListMapper taskListMapper;
 
-    public List<TaskList> GetTaskLists()
+    public List<TaskListSummaryDto> GetTaskLists()
     {
-        return taskListRepository.findAll();
+        List<TaskList> taskLists=taskListRepository.findAll();
+        return taskListMapper.taskListSummaryDtoList(taskLists);
     }
 
-    public TaskList AddTaskList(TaskList taskList) {
-        return taskListRepository.save(taskList);
+    public TaskListDto AddTaskList(TaskListDto taskListDto) {
+        TaskList taskList=taskListMapper.toTaskList(taskListDto);
+        TaskList SavedTaskList=taskListRepository.save(taskList);
+        return taskListMapper.toTaskListDto(SavedTaskList);
     }
 
-    public Optional<TaskList> GetTaskListById(UUID id) {
-        return taskListRepository.findById(id);
+    public TaskListDto GetTaskListById(UUID id) {
+          TaskList taskList= taskListRepository.findById(id).orElseThrow();
+        return taskListMapper.toTaskListDto(taskList);
     }
 
-    public TaskList PutTaskListById(UUID id, TaskList taskList) {
+    public TaskListDto PutTaskListById(UUID id, TaskList taskList) {
         taskList.setId(id);
-        return taskListRepository.save(taskList);
+        TaskList savedTaskList= taskListRepository.save(taskList);
+        return taskListMapper.toTaskListDto(savedTaskList);
     }
 
     public String DeleteTaskListById(UUID id) {

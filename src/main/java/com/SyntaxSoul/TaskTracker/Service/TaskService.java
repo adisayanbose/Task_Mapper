@@ -1,5 +1,7 @@
 package com.SyntaxSoul.TaskTracker.Service;
 
+import com.SyntaxSoul.TaskTracker.DTOs.TaskDto;
+import com.SyntaxSoul.TaskTracker.Mappers.TaskMapper;
 import com.SyntaxSoul.TaskTracker.Models.Task;
 import com.SyntaxSoul.TaskTracker.Models.TaskList;
 import com.SyntaxSoul.TaskTracker.Repository.TaskListRepository;
@@ -19,21 +21,26 @@ public class TaskService {
     private TaskRepository taskRepository;
     @Autowired
     private TaskListRepository taskListRepository;
+    @Autowired
+    private TaskMapper taskMapper;
 
-    public  List<Task> GetTasks(UUID taskListId) {
-        return taskRepository.findByTaskListId(taskListId);
+
+    public  List<TaskDto> GetTasks(UUID taskListId) {
+        List<Task> tasks=taskRepository.findByTaskListId(taskListId);
+        return taskMapper.totaskDtoList(tasks);
     }
 
-    public Task putTasks(UUID taskListId, @RequestBody Task task) {
-        System.out.println("in service");
-        TaskList taskList=taskListRepository.findById(taskListId).get();
+    public TaskDto putTasks(UUID taskListId, @RequestBody Task task) {
+        TaskList taskList=taskListRepository.findById(taskListId).orElseThrow();
         task.setTaskList(taskList);
-        return taskRepository.save(task);
+        Task savedTask= taskRepository.save(task);
+        return taskMapper.toTaskDto(task);
     }
 
 
-    public Task GetTask(UUID taskId, UUID taskListId) {
-        return taskRepository.findByIdAndTaskListId(taskId,taskListId);
+    public TaskDto GetTask(UUID taskId, UUID taskListId) {
+        Task task= taskRepository.findByIdAndTaskListId(taskId,taskListId);
+        return taskMapper.toTaskDto(task);
     }
 
     public Task UpdateTask(UUID taskId, UUID task_list_id, Task task) {

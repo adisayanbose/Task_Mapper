@@ -18,9 +18,9 @@ public class Task extends  BaseModel{
     @Temporal(TemporalType.DATE)
     private LocalDate dueDate;
 
-    private TaskPriority task_Priority;
+    private TaskPriority taskPriority;
 
-    private TaskStatus task_Status;
+    private TaskStatus taskStatus;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private TaskList taskList;
