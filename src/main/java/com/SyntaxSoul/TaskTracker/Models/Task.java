@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Task extends  BaseModel{
 
-    @Temporal(TemporalType.DATE)
     private LocalDate dueDate;
 
     private TaskPriority taskPriority;

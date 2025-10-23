@@ -2,6 +2,7 @@ package com.SyntaxSoul.TaskTracker.Controllers;
 
 
 import com.SyntaxSoul.TaskTracker.DTOs.TaskDto;
+import com.SyntaxSoul.TaskTracker.DTOs.TaskRequestDto;
 import com.SyntaxSoul.TaskTracker.Models.Task;
 import com.SyntaxSoul.TaskTracker.Repository.TaskListRepository;
 import com.SyntaxSoul.TaskTracker.Repository.TaskRepository;
@@ -28,7 +29,7 @@ public class TaskController {
     }
 
     @PostMapping()
-    public TaskDto PutTasks(@PathVariable UUID task_list_id,@RequestBody Task task)
+    public TaskDto PutTasks(@PathVariable UUID task_list_id,@RequestBody TaskRequestDto task)
     {
         return taskService.putTasks(task_list_id,task);
     }
@@ -40,13 +41,13 @@ public class TaskController {
     }
 
     @PutMapping(path = "/{task_id}")
-    public Task PutTask(@PathVariable UUID task_id,@PathVariable UUID task_list_id,@RequestBody Task task)
+    public TaskDto PutTask(@PathVariable UUID task_id,@PathVariable UUID task_list_id,@RequestBody TaskRequestDto taskRequestDto)
     {
-        return taskService.UpdateTask(task_id,task_list_id,task);
+        return taskService.UpdateTask(task_id,task_list_id,taskRequestDto);
     }
 
     @DeleteMapping(path = "/{task_id}")
-    public Task DeleteTask(@PathVariable UUID task_id){
+    public TaskDto DeleteTask(@PathVariable UUID task_id){
         return taskService.deleteTask(task_id);
     }
 }

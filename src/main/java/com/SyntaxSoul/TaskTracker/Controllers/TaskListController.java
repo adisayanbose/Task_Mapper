@@ -1,8 +1,8 @@
 package com.SyntaxSoul.TaskTracker.Controllers;
 
 import com.SyntaxSoul.TaskTracker.DTOs.TaskListDto;
+import com.SyntaxSoul.TaskTracker.DTOs.TaskListRequestDto;
 import com.SyntaxSoul.TaskTracker.DTOs.TaskListSummaryDto;
-import com.SyntaxSoul.TaskTracker.Models.TaskList;
 import com.SyntaxSoul.TaskTracker.Service.TaskListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class TaskListController {
     }
 
     @PostMapping(path ="")
-    public TaskListDto AddTaskList(@RequestBody TaskListDto taskListDto)
+    public TaskListDto AddTaskList(@RequestBody TaskListRequestDto taskListDto)
     {
         return taskListService.AddTaskList(taskListDto);
     }
@@ -35,12 +35,12 @@ public class TaskListController {
     }
 
     @PutMapping("/{id}")
-    public TaskListDto PostTaskListById(@PathVariable UUID id,@RequestBody TaskList taskList){
+    public TaskListDto PostTaskListById(@PathVariable UUID id,@RequestBody TaskListRequestDto taskList){
         return taskListService.PutTaskListById(id,taskList);
     }
 
     @DeleteMapping("/{id}")
-    public String DeleteTaskList(@PathVariable UUID id){
+    public TaskListDto DeleteTaskList(@PathVariable UUID id){
         return taskListService.DeleteTaskListById(id);
     }
 

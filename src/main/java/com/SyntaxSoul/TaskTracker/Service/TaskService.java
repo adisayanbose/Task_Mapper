@@ -1,6 +1,7 @@
 package com.SyntaxSoul.TaskTracker.Service;
 
 import com.SyntaxSoul.TaskTracker.DTOs.TaskDto;
+import com.SyntaxSoul.TaskTracker.DTOs.TaskRequestDto;
 import com.SyntaxSoul.TaskTracker.Mappers.TaskMapper;
 import com.SyntaxSoul.TaskTracker.Models.Task;
 import com.SyntaxSoul.TaskTracker.Models.TaskList;
@@ -30,11 +31,12 @@ public class TaskService {
         return taskMapper.totaskDtoList(tasks);
     }
 
-    public TaskDto putTasks(UUID taskListId, @RequestBody Task task) {
+    public TaskDto putTasks(UUID taskListId, @RequestBody TaskRequestDto taskRequest) {
         TaskList taskList=taskListRepository.findById(taskListId).orElseThrow();
+        Task task=taskMapper.toTask(taskRequest);
         task.setTaskList(taskList);
         Task savedTask= taskRepository.save(task);
-        return taskMapper.toTaskDto(task);
+        return taskMapper.toTaskDto(savedTask);
     }
 
 
@@ -43,16 +45,16 @@ public class TaskService {
         return taskMapper.toTaskDto(task);
     }
 
-    public Task UpdateTask(UUID taskId, UUID task_list_id, Task task) {
-        TaskList taskList=taskListRepository.findById(task_list_id).get();
-        task.setTaskList(taskList);
-        task.setId(taskId);
-        return taskRepository.save(task);
+    public TaskDto UpdateTask(UUID taskId, UUID task_list_id, TaskRequestDto taskRequestDto) {
+        Task exisitingTask=taskRepository.findById(taskId).orElseThrow();
+        taskMapper.toTask(exisitingTask,taskRequestDto);
+        Task updatedTask= taskRepository.save(exisitingTask);
+        return taskMapper.toTaskDto(updatedTask);
     }
 
-    public Task deleteTask(UUID taskId) {
-        Task task=taskRepository.findById(taskId).get();
+    public TaskDto deleteTask(UUID taskId) {
+        Task task=taskRepository.findById(taskId).orElseThrow();
         taskRepository.deleteById(taskId);
-        return  task;
+        return  taskMapper.toTaskDto(task);
     }
 }
